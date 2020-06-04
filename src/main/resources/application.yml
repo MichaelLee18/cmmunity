@@ -1,0 +1,17 @@
+server:
+  port: 9090
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:h2:~/community
+    username: sa
+    password: 123
+    driver-class-name: org.h2.Driver
+github:
+  client:
+    id: d217cbd0705a004e0bdb
+    secret: d5d62dd5691df3667da7112ab70b1bdf1ec61200
+  redirect:
+    uri: http://localhost:9090/callback
+
