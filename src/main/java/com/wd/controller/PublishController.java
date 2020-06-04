@@ -35,7 +35,7 @@ public class PublishController {
         //检查用户是否登录
         User user = null;
         Cookie[] cookies = request.getCookies();
-        if (cookies!=null){
+        if (cookies!=null&&cookies.length>0){
             for (Cookie cookie : cookies) {
                 if(cookie.getName().equals("token")){
                     String value = cookie.getValue();

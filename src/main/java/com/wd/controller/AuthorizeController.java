@@ -49,6 +49,7 @@ public class AuthorizeController {
             user.setToken(token);
             user.setGmt_create(System.currentTimeMillis());
             user.setGmt_modify(user.getGmt_create());
+            user.setAvatar_url(githubUser.getAvatar_url());
             userMapper.save(user);
             response.addCookie(new Cookie("token",token));
         }
