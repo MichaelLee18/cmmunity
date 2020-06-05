@@ -9,3 +9,7 @@ body{
     float: right;
     margin-bottom: 20px;
 }
+.avatar{
+    width: 80px;
+    height: 80px;
+}
