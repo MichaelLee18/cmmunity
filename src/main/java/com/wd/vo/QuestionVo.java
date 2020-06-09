@@ -8,12 +8,12 @@ public class QuestionVo {
     private Integer id;
     private String title;
     private String description;
-    private Long gmt_create;
-    private Long gmt_modify;
+    private Long gmtCreate;
+    private Long gmtModify;
     private Integer creator;
-    private Integer comment_count;
-    private Integer reply_count;
-    private Integer like_count;
+    private Integer commentCount;
+    private Integer replyCount;
+    private Integer likeCount;
     private String tag;
     private User user;
 }
