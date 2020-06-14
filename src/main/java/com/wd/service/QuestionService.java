@@ -1,5 +1,8 @@
 package com.wd.service;
 
+import com.wd.enums.CustomizeErrorStatus;
+import com.wd.exception.CustomizeException;
+import com.wd.mapper.QuestionExtMapper;
 import com.wd.mapper.QuestionMapper;
 import com.wd.mapper.UserMapper;
 import com.wd.model.Question;
@@ -21,6 +24,8 @@ public class QuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PageVo list(Integer userId,Integer page, Integer pageSize){
         PageVo pageVo = new PageVo();
@@ -97,6 +102,9 @@ public class QuestionService {
 
     public QuestionVo findById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new CustomizeException(CustomizeErrorStatus.QUESTION_NOT_FOUND);
+        }
         QuestionVo questionVo = new QuestionVo();
         BeanUtils.copyProperties(question,questionVo);
 
@@ -109,12 +117,22 @@ public class QuestionService {
         if(question.getId()!=null){
             //update
             question.setGmtModify(System.currentTimeMillis());
-            questionMapper.updateByPrimaryKey(question);
+            int r = questionMapper.updateByPrimaryKey(question);
+            if(r!=1){
+                throw new CustomizeException(CustomizeErrorStatus.QUESTION_NOT_FOUND);
+            }
         }else{
             //insert
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModify(question.getGmtCreate());
             questionMapper.insert(question);
         }
+    }
+
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }

@@ -12,7 +12,7 @@ public class QuestionVo {
     private Long gmtModify;
     private Integer creator;
     private Integer commentCount;
-    private Integer replyCount;
+    private Integer viewCount;
     private Integer likeCount;
     private String tag;
     private User user;
