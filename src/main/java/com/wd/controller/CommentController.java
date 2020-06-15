@@ -6,6 +6,7 @@ import com.wd.model.Comment;
 import com.wd.model.User;
 import com.wd.service.CommentService;
 import com.wd.vo.ResultVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,9 @@ public class CommentController {
         User user = (User) request.getSession().getAttribute("user");
         if(user==null){
             return ResultVO.errorOf(CustomizeErrorStatus.USER_NOT_LOGIN);
+        }
+        if(commentDTO==null|| (commentDTO!=null&&StringUtils.isBlank(commentDTO.getContent()))){
+            return ResultVO.errorOf(CustomizeErrorStatus.COMMENT_CONTENT_NOT_EMPTY);
         }
         Comment comment = new Comment();
         comment.setContent(commentDTO.getContent());

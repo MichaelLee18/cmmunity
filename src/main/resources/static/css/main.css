@@ -16,3 +16,29 @@ body{
 .main .profile{
     margin-top: 30px;
 }
+.avatar-img{
+    padding-top: 25px;
+}
+.comment{
+    margin: 10px 0;
+}
+.comment-btn{
+    float: right;
+    margin-bottom: 10px;
+}
+.padding-left{
+    padding-left: 10px;
+}
+.icon{
+    color: #999999;
+    margin-right: 10px;
+    font-size: 20px;
+}
+.icon:hover{
+    color: deepskyblue;
+    cursor: pointer;
+}
+.comment-split{
+    border-bottom: 1px solid rgb(238, 238, 238);
+    padding: 15px 0;
+}

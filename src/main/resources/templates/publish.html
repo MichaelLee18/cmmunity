@@ -20,19 +20,19 @@
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true">发起</span></h2>
             <div class="divider"></div>
             <form action="/publish" method="post">
-                <input type="hidden" name="id" th:value="${question.id}">
+                <input type="hidden" name="id"  th:value="${question==null?'':question.id}">
                 <div class="form-group">
                     <label for="t">问题标题(简单扼要)</label>
-                    <input type="text" class="form-control" id="t" name="title" th:value="${question.title}" placeholder="请输入问题标题">
+                    <input type="text" class="form-control" id="t" name="title"   th:value="${question==null?'':question.title}" placeholder="请输入问题标题">
                 </div>
                 <div class="form-group">
                     <label for="d">问题描述</label>
-                    <textarea rows="10" cols="50" id="d" name="descr" th:text="${question.description}"  class="form-control"></textarea>
+                    <textarea rows="10" cols="50" id="d" name="descr" th:text="${question==null?'':question.description}"  class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="tag">添加标签</label>
-                    <input type="text" class="form-control" id="tag" name="tags"  th:value="${question.tag}" placeholder="添加标签以，分隔">
+                    <input type="text" class="form-control" id="tag" name="tags"  th:value="${question==null?'':question.tag}" placeholder="添加标签以，分隔">
                 </div>
 
                 <button type="submit" class="btn btn-success btn-publish">&nbsp;发&nbsp;&nbsp;布&nbsp;</button>

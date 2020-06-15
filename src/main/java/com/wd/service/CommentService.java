@@ -6,10 +6,22 @@ import com.wd.exception.CustomizeException;
 import com.wd.mapper.CommentMapper;
 import com.wd.mapper.QuestionExtMapper;
 import com.wd.mapper.QuestionMapper;
+import com.wd.mapper.UserMapper;
 import com.wd.model.Comment;
+import com.wd.model.CommentExample;
 import com.wd.model.Question;
+import com.wd.model.User;
+import com.wd.vo.CommentVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -19,6 +31,9 @@ public class CommentService {
     private QuestionMapper questionMapper;
     @Autowired
     private QuestionExtMapper questionExtMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Transactional
     public void insert(Comment comment) {
         if (comment.getParentId()==null|| comment.getParentId()==0){
             throw new CustomizeException(CustomizeErrorStatus.TARGET_COMMENT_NOT_FOUND);
@@ -44,5 +59,27 @@ public class CommentService {
             }
             commentMapper.insert(comment);
         }
+    }
+
+    public List<CommentVo> findByQuestionId(Integer id) {
+        //根据问题id和回复
+        CommentExample commentExample = new CommentExample();
+        commentExample.createCriteria().andParentIdEqualTo(id)
+        .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        commentExample.setOrderByClause("gmt_create desc");
+        List<Comment> comments = commentMapper.selectByExample(commentExample);
+        //获取userId集合
+        Set<Integer> set = comments.stream().map(comment -> comment.getCommentator()).collect(Collectors.toSet());
+        Map<Integer, User> userMap = set.stream().collect(Collectors.toMap(Integer::intValue, integer ->
+                userMapper.selectByPrimaryKey(integer)
+        ));
+        //转换成CommentVo
+        List<CommentVo> commentVos = comments.stream().map(comment -> {
+            CommentVo commentVo = new CommentVo();
+            commentVo.setComment(comment);
+            commentVo.setUser(userMap.get(comment.getCommentator()));
+            return commentVo;
+        }).collect(Collectors.toList());
+        return commentVos;
     }
 }

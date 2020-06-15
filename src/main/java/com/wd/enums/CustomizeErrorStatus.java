@@ -8,7 +8,8 @@ public enum CustomizeErrorStatus implements ICustomizeError {
     USER_NOT_LOGIN(2003,"用户换没有登录，请登录！！！"),
     SYSTEM_ERROR(2004,"用户换没有登录，请登录！！！"),
     COMMENT_TYPE_ERROR(2005,"评论或回复类型错误！！！"),
-    COMMENT_NOT_FOUND(2006,"你回复的评论已经不在了,请换个试试!!!")
+    COMMENT_NOT_FOUND(2006,"你回复的评论已经不在了,请换个试试!!!"),
+    COMMENT_CONTENT_NOT_EMPTY(2006,"评论内容不能为空!!!")
     ;
 
 

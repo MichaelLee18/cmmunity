@@ -28,10 +28,10 @@
                     <div class="media-body">
                         <h4 class="media-heading"><span th:text="${qvo.title}"></span></h4>
                         <span th:text=" ${qvo.description}"></span><br>
-                        <span th:text=" ${qvo.comment_count}"></span><span th:text="个评论"></span>
-                        <span th:text=" ${qvo.reply_count}"></span><span th:text="个回复"></span>
-                        <span th:text=" ${qvo.like_count}"></span><span th:text="个赞"></span>
-                        <span th:text=" ${#calendars.format(qvo.gmt_create,'yyyy-MM-dd HH:ss')}"></span>
+                        <span th:text=" ${qvo.commentCount}"></span><span th:text="个评论"></span>
+                        <span th:text=" ${qvo.viewCount}"></span><span th:text="个回复"></span>
+                        <span th:text=" ${qvo.likeCount}"></span><span th:text="个赞"></span>
+                        <span th:text=" ${#calendars.format(qvo.gmtCreate,'yyyy-MM-dd HH:ss')}"></span>
                     </div>
                 </li>
             </ul>
