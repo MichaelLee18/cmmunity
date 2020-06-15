@@ -39,5 +39,15 @@ function post() {
  */
 function collapseComment(obj) {
     var id = obj.getAttribute("data-id");
+    var collapseDiv =  $("#comment"+id);
+    var attribute = collapseDiv.attr("data-target");
+
+    if(attribute){
+        collapseDiv.removeClass("show");
+        collapseDiv.removeAttr("data-target");
+    }else{
+        collapseDiv.addClass("show");
+        collapseDiv.attr("data-target","a");
+    }
 
 }
