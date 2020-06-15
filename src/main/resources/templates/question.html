@@ -54,10 +54,35 @@
                                 <span class="glyphicon glyphicon-thumbs-up padding-left icon"></span>
                                 <span class="glyphicon glyphicon-comment icon" th:data-id="${commentVo.comment.id}" onclick="collapseComment(this)"></span>
                                 <span class="pull-right" th:text="${#calendars.format(commentVo.comment.gmtCreate,'yyyy-MM-dd')}"></span>&nbsp
-                                <div class="collapse in" id="comment-${commentVo.comment.id}">
-                                    <div class="card card-body">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                                <div class="collapse" th:id="comment+${commentVo.comment.id}">
+                                <!--二级评论列表-->
+                                    <div class=".col-sm-12 col-xs-12 col-md-12 send-comment">
+                                        <div class=".col-sm-12 col-xs-12 col-md-12">
+                                            <ul class="media-list comment-split" th:each="commentVo : ${commentVos}">
+                                                <li class="media">
+                                                    <div class="media-left">
+                                                        <a href="#">
+                                                            <img class="media-object avatar img-rounded" th:src="@{${commentVo.user.avatarUrl}}" >
+                                                        </a>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h4 class="media-right">
+                                                            <span th:text="${commentVo.user.name}"></span>
+                                                        </h4>
+                                                        <h5><span class="padding-left" th:text="${commentVo.comment.content}"></span></h5>
+                                                        <span class="glyphicon glyphicon-thumbs-up padding-left icon"></span>
+                                                        <span class="glyphicon glyphicon-comment icon" th:data-id="${commentVo.comment.id}" onclick="collapseComment(this)"></span>
+                                                        <span class="pull-right" th:text="${#calendars.format(commentVo.comment.gmtCreate,'yyyy-MM-dd')}"></span>&nbsp
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class=".col-sm-12 col-xs-12 col-md-12">
+                                            <input type="text" class="form-control" placeholder="请评论....">
+                                            <button type="button" class="btn btn-success pull-right button">评论</button>
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
                         </li>
