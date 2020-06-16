@@ -435,7 +435,8 @@
       COMMENT_COUNT = #{commentCount,jdbcType=INTEGER},
       VIEW_COUNT = #{viewCount,jdbcType=INTEGER},
       LIKE_COUNT = #{likeCount,jdbcType=INTEGER},
-      TAG = #{tag,jdbcType=VARCHAR}
+      TAG = #{tag,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByExampleWithBLOBsWithRowbounds" parameterType="com.wd.model.QuestionExample" resultMap="ResultMapWithBLOBs">

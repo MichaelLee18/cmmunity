@@ -1,5 +1,6 @@
 package com.wd.controller;
 
+import com.wd.enums.CommentTypeEnum;
 import com.wd.service.CommentService;
 import com.wd.service.QuestionService;
 import com.wd.vo.CommentVo;
@@ -22,11 +23,13 @@ public class QuestionController {
 
     @GetMapping("/question/{id}")
     public String question(@PathVariable("id")Integer id, Model model){
-        QuestionVo questionVo = questionService.findById(id);
-        List<CommentVo> commentVoList = commentService.findByQuestionId(id);
+        QuestionVo questionVo = questionService.findQuestionVoById(id);
+        List<QuestionVo> relatedQuestions = questionService.findTagRelatedQuestionsById(questionVo);
+        List<CommentVo> commentVoList = commentService.findById(id, CommentTypeEnum.QUESTION);
         questionService.incView(id);
         model.addAttribute("commentVos",commentVoList);
         model.addAttribute("question",questionVo);
+        model.addAttribute("relatedQuestions",relatedQuestions);
         return "question";
     }
 }

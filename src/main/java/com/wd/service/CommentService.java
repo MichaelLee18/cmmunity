@@ -61,11 +61,11 @@ public class CommentService {
         }
     }
 
-    public List<CommentVo> findByQuestionId(Integer id) {
+    public List<CommentVo> findById(Integer id,CommentTypeEnum commentTypeEnum) {
         //根据问题id和回复
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andParentIdEqualTo(id)
-        .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        .andTypeEqualTo(commentTypeEnum.getType());
         commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
         //获取userId集合

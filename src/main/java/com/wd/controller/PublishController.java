@@ -1,12 +1,10 @@
 package com.wd.controller;
 
-import com.wd.mapper.QuestionMapper;
-import com.wd.mapper.UserMapper;
 import com.wd.model.Question;
 import com.wd.model.User;
 import com.wd.service.QuestionService;
-import com.wd.service.UserService;
 import com.wd.vo.QuestionVo;
+import com.wd.vo.TagVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -24,14 +21,16 @@ public class PublishController {
     @Autowired
     private QuestionService questionService;
     @GetMapping("/publish")
-    public String publish(){
+    public String publish(Model model){
+        model.addAttribute("allTags", TagVo.getAllCategoryTags());
         return "publish";
     }
 
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable("id")Integer id, Model model){
-        QuestionVo questionVo = questionService.findById(id);
+        QuestionVo questionVo = questionService.findQuestionVoById(id);
         model.addAttribute("question",questionVo);
+        model.addAttribute("allTags", TagVo.getAllCategoryTags());
         return "publish";
     }
 
@@ -45,16 +44,22 @@ public class PublishController {
     ){
         //检查用户是否登录
         User user = (User) request.getSession().getAttribute("user");
+        Question question = null;
         if(user!=null){
-            Question question = new Question();
-            question.setId(id);
+            if(id!=null){
+                question = questionService.findQuestionById(id);
+
+            }else{
+                question = new Question();
+                question.setId(id);
+                question.setCreator(user.getId());
+                question.setCommentCount(0);
+                question.setLikeCount(0);
+                question.setViewCount(0);
+            }
             question.setTitle(title);
             question.setDescription(descr);
-            question.setCreator(user.getId());
             question.setTag(tags);
-            question.setCommentCount(0);
-            question.setLikeCount(0);
-            question.setViewCount(0);
             questionService.insertOrUpdate(question);
         }
         return "redirect:/";

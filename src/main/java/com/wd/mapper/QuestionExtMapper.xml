@@ -39,4 +39,8 @@
     COMMENT_COUNT = COMMENT_COUNT+#{commentCount,jdbcType=INTEGER}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByTags" parameterType="com.wd.model.Question" resultMap="BaseResultMap">
+    select * from QUESTION where ID != #{id,jdbcType=INTEGER} and TAG regexp  #{tag,jdbcType=VARCHAR}
+  </select>
 </mapper>

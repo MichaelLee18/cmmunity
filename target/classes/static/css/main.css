@@ -49,3 +49,14 @@ body{
 .send-comment .button{
     margin: 10px 0;
 }
+.title-list{
+    list-style: none;
+    line-height: 30px;
+    padding-left: 0px;
+    font-size: 20px;
+}
+.label-bg{
+    white-space: inherit;
+    margin: 3px 3px;
+    display: inline-block;
+}

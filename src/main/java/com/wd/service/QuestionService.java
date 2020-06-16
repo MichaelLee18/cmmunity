@@ -10,13 +10,16 @@ import com.wd.model.QuestionExample;
 import com.wd.model.User;
 import com.wd.vo.PageVo;
 import com.wd.vo.QuestionVo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -100,7 +103,7 @@ public class QuestionService {
         return pageVo;
     }
 
-    public QuestionVo findById(Integer id) {
+    public QuestionVo findQuestionVoById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if(question==null){
             throw new CustomizeException(CustomizeErrorStatus.QUESTION_NOT_FOUND);
@@ -112,6 +115,7 @@ public class QuestionService {
         questionVo.setUser(user);
         return questionVo;
     }
+
 
     public void insertOrUpdate(Question question) {
         if(question.getId()!=null){
@@ -134,5 +138,33 @@ public class QuestionService {
         question.setId(id);
         question.setViewCount(1);
         questionExtMapper.incView(question);
+    }
+
+    public Question findQuestionById(Integer id) {
+        Question question = questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new CustomizeException(CustomizeErrorStatus.QUESTION_NOT_FOUND);
+        }
+        return question;
+    }
+
+    public  List<QuestionVo> findTagRelatedQuestionsById(QuestionVo questionVo) {
+        if (StringUtils.isBlank(questionVo.getTag())){
+            return new ArrayList<>();
+        }
+        String[] tags = questionVo.getTag().split(",");
+        String splitTags = Arrays.asList(tags).stream().collect(Collectors.joining("|"));
+        Question question = new Question();
+        question.setId(questionVo.getId());
+        question.setTag(splitTags);
+        List<Question> questions = questionExtMapper.selectByTags(question);
+        List<QuestionVo> questionVos = questions.stream().map(q -> {
+            QuestionVo qv = new QuestionVo();
+            BeanUtils.copyProperties(q, qv);
+            User user = userMapper.selectByPrimaryKey(q.getCreator());
+            qv.setUser(user);
+            return qv;
+        }).collect(Collectors.toList());
+        return questionVos;
     }
 }

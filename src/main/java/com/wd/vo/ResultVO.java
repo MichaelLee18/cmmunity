@@ -5,10 +5,10 @@ import com.wd.exception.CustomizeException;
 import lombok.Data;
 
 @Data
-public class ResultVO {
+public class ResultVO<T> {
     private String message;
     private Integer code;
-
+    private T data;
     public static ResultVO errorOf(Integer code,String message){
         ResultVO resultVO = new ResultVO();
         resultVO.setCode(code);
@@ -26,6 +26,15 @@ public class ResultVO {
         resultVO.setMessage("成功!!!");
         return resultVO;
     }
+
+    public static <T> ResultVO okOf(T data){
+        ResultVO resultVO = new ResultVO();
+        resultVO.setCode(200);
+        resultVO.setMessage("成功!!!");
+        resultVO.setData(data);
+        return resultVO;
+    }
+
 
     public static ResultVO errorOf(CustomizeException ex) {
         return errorOf(ex.getCode(),ex.getMessage());

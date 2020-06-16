@@ -1,19 +1,20 @@
 package com.wd.controller;
 
 import com.wd.dto.CommentDTO;
+import com.wd.enums.CommentTypeEnum;
 import com.wd.enums.CustomizeErrorStatus;
 import com.wd.model.Comment;
 import com.wd.model.User;
 import com.wd.service.CommentService;
+import com.wd.vo.CommentVo;
 import com.wd.vo.ResultVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -40,5 +41,17 @@ public class CommentController {
         comment.setCommentator(user.getId());
         commentService.insert(comment);
         return ResultVO.okOf();
+    }
+
+
+    @ResponseBody
+    @GetMapping("/comment/{id}")
+    public ResultVO<List<CommentVo>> comment(@PathVariable(name="id") Integer id,HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        if(user==null){
+            return ResultVO.errorOf(CustomizeErrorStatus.USER_NOT_LOGIN);
+        }
+        List<CommentVo> commentVos = commentService.findById(id, CommentTypeEnum.COMMENT);
+        return ResultVO.okOf(commentVos);
     }
 }
